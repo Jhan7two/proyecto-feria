@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="row">
+  <h3>EMPLEADOS</h3>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="card card-body">
+      <form action="{{ url_for('add_employee') }}" method="POST">
+        <div class="form-group">
+          <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="apellido" placeholder="Apellido" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="telefono" placeholder="Teléfono" required>
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control" name="correo" placeholder="Correo" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="cargo" placeholder="Cargo" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="area" placeholder="Área" required>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="sucursal" placeholder="Sucursal" required>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Cargo</th>
+          <th>Área</th>
+          <th>Sucursal</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in employee %}
+        <tr>
+          <td>{{ data.ID_empleado }}</td>
+          <td>{{ data.Nombre }}</td>
+          <td>{{ data.Apellido }}</td>
+          <td>{{ data.Correo }}</td>
+          <td>{{ data.Telefono }}</td>
+          <td>{{ data.Cargo }}</td>
+          <td>{{ data.Area }}</td>
+          <td>{{ data.Sucursal }}</td>
+          <td width="180">
+            <a href="{{ url_for('get_employee', id=data.ID_empleado) }}" class="btn btn-secondary btn-sm">Editar</a>
+            <form action="{{ url_for('delete_employee', id=data.ID_empleado) }}" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
